@@ -348,11 +348,11 @@ public class InputGuruMapel extends javax.swing.JFrame {
         String mapelId = mapelDataArray[0]; // Mendapatkan ID mapel dari combo box
         
         if (
-            checkMapelNumber(guruId) < 3 ||
             (
-              idSelected != null &&
-              checkGuruNotTakenMapel(guruId, Integer.parseInt(mapelId))
-            )
+              checkMapelNumber(guruId) < 3 ||
+              idSelected != null
+            ) &&
+            checkGuruNotTakenMapel(guruId, Integer.parseInt(mapelId))
         ) {
           if (idSelected != null) {
               prestt = db.conn.prepareStatement(

@@ -88,6 +88,17 @@ public class InputJadwal extends javax.swing.JFrame {
     return Integer.parseInt(mapel.split(delimiter)[0]);
   }
   
+  private Time longTimeMapel(Time startMapel, int longTime) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(startMapel);
+    cal.add(Calendar.MINUTE, longTime);
+
+    Date newDate = cal.getTime();
+    Time endTimeMapel = new Time(newDate.getTime());
+    
+    return endTimeMapel;
+  }
+  
   private boolean noSameTime(String hari, Time jam) {
     try {
       prestt = db.conn.prepareStatement(
@@ -100,12 +111,7 @@ public class InputJadwal extends javax.swing.JFrame {
         Time startTimeMapel = res.getTime("jam");
         int lamaPelajaran = res.getInt("jam_pelajaran");
         
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(startTimeMapel);
-        cal.add(Calendar.MINUTE, lamaPelajaran);
-        
-        Date newDate = cal.getTime();
-        Time endTimeMapel = new Time(newDate.getTime());
+        Time endTimeMapel = longTimeMapel(jam, lamaPelajaran);
         
         if (jam.compareTo(startTimeMapel) >= 0 && jam.compareTo(endTimeMapel) <= 0) {
           return false;
@@ -174,10 +180,14 @@ public class InputJadwal extends javax.swing.JFrame {
         String nama = res.getString("nama");
         String kelas = res.getString("kelas");
         String hari = res.getString("hari");
-        String waktu = res.getTime("jam").toString();
+        Time waktu = res.getTime("jam");
+        String waktu_string = waktu.toString();
+        int waktu_mapel = res.getInt("m.jam_pelajaran");
         
-        String jadwal = hari + ", " + waktu;
-        String[] dataListTemp = {id, nama, kelas, jadwal};
+        Time endTimeMapel = longTimeMapel(waktu, waktu_mapel);
+        
+        String jadwal = waktu_string + "-" + endTimeMapel.toString();
+        String[] dataListTemp = {id, nama, kelas, hari, jadwal};
         modelTable.addRow(dataListTemp);
       }
 
@@ -337,14 +347,14 @@ public class InputJadwal extends javax.swing.JFrame {
 
       },
       new String [] {
-        "Id", "Mapel", "Kelas", "Jadwal"
+        "Id", "Mapel", "Kelas", "Hari", "Jadwal"
       }
     ) {
       Class[] types = new Class [] {
-        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
       };
       boolean[] canEdit = new boolean [] {
-        false, false, false, false
+        false, false, false, false, false
       };
 
       public Class getColumnClass(int columnIndex) {
@@ -365,8 +375,11 @@ public class InputJadwal extends javax.swing.JFrame {
       tableJadwal.getColumnModel().getColumn(0).setResizable(false);
       tableJadwal.getColumnModel().getColumn(0).setPreferredWidth(0);
       tableJadwal.getColumnModel().getColumn(1).setResizable(false);
+      tableJadwal.getColumnModel().getColumn(1).setPreferredWidth(0);
       tableJadwal.getColumnModel().getColumn(2).setResizable(false);
+      tableJadwal.getColumnModel().getColumn(2).setPreferredWidth(0);
       tableJadwal.getColumnModel().getColumn(3).setResizable(false);
+      tableJadwal.getColumnModel().getColumn(3).setPreferredWidth(0);
     }
 
     jButton1.setText("Back to main menu");
@@ -506,7 +519,7 @@ public class InputJadwal extends javax.swing.JFrame {
     Time time = Time.valueOf(waktu);
     boolean resNoSchedule = noSchedule(getIdMapel(mapel), kelas, hari, time);
     
-    if (resNoSchedule) {
+    if (resNoSchedule || idSelected != null) {
       boolean result = submitData(mapel, kelas, hari, waktu);
     
       if (result) {

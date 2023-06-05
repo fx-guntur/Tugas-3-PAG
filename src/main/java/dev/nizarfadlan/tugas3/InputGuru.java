@@ -162,8 +162,7 @@ public class InputGuru extends javax.swing.JFrame {
                       .addGap(18, 18, 18)
                       .addComponent(jRadioButton1)
                       .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                      .addComponent(jRadioButton2)
-                      .addGap(24, 24, 24)))))
+                      .addComponent(jRadioButton2)))))
               .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)))
           .addGroup(jPanel1Layout.createSequentialGroup()
             .addGap(112, 112, 112)
@@ -195,7 +194,7 @@ public class InputGuru extends javax.swing.JFrame {
           .addComponent(jButton1))
         .addGap(58, 58, 58)
         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
         .addComponent(mainBtn)
         .addGap(39, 39, 39))
     );
@@ -208,7 +207,9 @@ public class InputGuru extends javax.swing.JFrame {
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+      .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+        .addGap(0, 0, 0)
+        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     pack();
